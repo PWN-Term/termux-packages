@@ -13,6 +13,8 @@ TERMUX_PKG_BUILD_IN_SRC=true
 TERMUX_PKG_HAS_DEBUG=false
 TERMUX_PKG_NO_ELF_CLEANER=true
 
+# Force build
+
 termux_step_pre_configure() {
 	unset JAVA_HOME
 
