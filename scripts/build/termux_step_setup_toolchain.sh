@@ -143,21 +143,6 @@ termux_setup_standalone_toolchain() {
 		# Remove android-support header wrapping not needed on android-21:
 		rm -Rf $_TERMUX_TOOLCHAIN_TMPDIR/sysroot/usr/local
 
-		# Linker wrapper script to add '--exclude-libs libgcc.a', see
-		# https://github.com/android-ndk/ndk/issues/379
-		# https://android-review.googlesource.com/#/c/389852/
-		local linker
-		for linker in lld; do
-			local wrap_linker=$_TERMUX_TOOLCHAIN_TMPDIR/bin/$linker
-			local real_linker=$_TERMUX_TOOLCHAIN_TMPDIR/bin/$linker.real
-			cp $wrap_linker $real_linker
-			echo '#!/bin/bash' > $wrap_linker
-			echo -n '$(dirname $0)/' >> $wrap_linker
-			echo -n $linker.real >> $wrap_linker
-			echo ' --exclude-libs,libgcc.a "$@"' >> $wrap_linker
-		done
-
-
 		for HOST_PLAT in aarch64-linux-android armv7a-linux-androideabi i686-linux-android x86_64-linux-android; do
 			cp $_TERMUX_TOOLCHAIN_TMPDIR/bin/$HOST_PLAT$TERMUX_PKG_API_LEVEL-clang \
 				$_TERMUX_TOOLCHAIN_TMPDIR/bin/$HOST_PLAT-clang
